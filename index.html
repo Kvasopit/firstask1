@@ -1,64 +1,16 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
   <link rel="stylesheet" href="css/main.css">
-  <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <script defer src="js/vue.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
   <script defer src="js/main.js"></script>
   <title>Product Socks App</title>
 </head>
 <body>
 <div id="app">
-  <div class="product">
-    <div class="product-image">
-      <img :src="image" :alt="altText"/>
-    </div>
-    <div class="product-info">
-      <h1>{{ title }}</h1>
-      <p v-if="inStock">In stock</p>
-      <p v-else :class="{ 'out-of-stock': !inStock }">Out of Stock</p>
-      <ul>
-        <li v-for="detail in details">{{ detail }}</li>
-      </ul>
-      <div v-for="variant in variants" :key="variant.variantId">
-        <p @mouseover="updateProduct(variant.variantImage)">
-          {{ variant.variantColor }}
-        </p>
-      </div>
-      <h3>Available sizes:</h3>
-      <ul>
-        <li v-for="size in sizes">{{ size }}</li>
-      </ul>
-      <p v-if="sale">{{ sale }}</p> <!-- Выводим информацию о распродаже -->
-    </div>
-    <div class="cart">
-      <p>Cart({{ cart }})</p>
-      <button
-        v-on:click="addToCart"
-        :disabled="!inStock"
-        :class="{ disabledButton: !inStock }"
-      >
-        Add to cart
-      </button>
-      <button v-on:click="removeFromCart">Remove from cart</button>
-    </div>
-    <div v-for="variant in variants" :key="variant.variantId">
-      <p @mouseover="updateProduct(variant.variantImage)">
-        {{ variant.variantColor }}
-      </p>
-    </div>
-    <div
-      class="color-box"
-      v-for="(variant, index) in variants"
-      :key="variant.variantId"
-      :style="{ backgroundColor: variant.variantColor }"
-      @mouseover="updateProduct(index)"
-    >
-    </div>
-  </div>
+  <product :premium="premium"></product>
 </div>
 </body>
 </html>

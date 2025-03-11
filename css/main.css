@@ -87,3 +87,8 @@ textarea {
     color: #16C0B0;
     text-decoration: underline;
 }
+.sale {
+    color: red;
+    font-weight: bold;
+    font-size: 1.2em;
+}

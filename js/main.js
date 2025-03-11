@@ -6,6 +6,7 @@ let app = new Vue({
     altText: "A pair of socks",
     inStock: true,
     details: ["80% cotton", "20% polyester", "Gender-neutral"],
+    empty: "asd",
     variants: [
       {
         variantId: 2234,

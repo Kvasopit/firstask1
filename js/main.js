@@ -1,17 +1,3 @@
-Vue.component('product-details', {
-  props: {
-    details: {
-      type: Array,
-      required: true
-    }
-  },
-  template: `
-    <ul>
-      <li v-for="detail in details">{{ detail }}</li>
-    </ul>
-  `
-});
-
 Vue.component('product', {
   props: {
     premium: {
@@ -29,7 +15,6 @@ Vue.component('product', {
         <p v-if="inStock">In stock</p>
         <p v-else :class="{ 'out-of-stock': !inStock }">Out of Stock</p>
 
-        <!-- Используем новый компонент product-details -->
         <product-details :details="details"></product-details>
 
         <div class="color-boxes">
@@ -47,11 +32,10 @@ Vue.component('product', {
           <li v-for="size in sizes">{{ size }}</li>
         </ul>
 
-        <p>Shipping: {{ shipping }}</p> <!-- Отображаем стоимость доставки -->
+        <p>Shipping: {{ shipping }}</p>
       </div>
 
       <div class="cart">
-        <p>Cart({{ cart }})</p>
         <button
           v-on:click="addToCart"
           :disabled="!inStock"
@@ -59,7 +43,13 @@ Vue.component('product', {
         >
           Add to cart
         </button>
-        <button v-on:click="removeFromCart">Remove from cart</button>
+        <button
+          v-on:click="removeFromCart"
+          :disabled="!inCart"
+          :class="{ disabledButton: !inCart }"
+        >
+          Remove from cart
+        </button>
       </div>
     </div>
   `,
@@ -69,7 +59,6 @@ Vue.component('product', {
       brand: "Vue Mastery",
       selectedVariant: 0,
       altText: "A pair of socks",
-      cart: 0,
       onSale: true,
       details: ["80% cotton", "20% polyester", "Gender-neutral"],
       variants: [
@@ -77,13 +66,11 @@ Vue.component('product', {
           variantId: 2234,
           variantColor: "green",
           variantImage: "./assets/vmSocks-green-onWhite.jpg",
-          variantQuantity: 10
         },
         {
           variantId: 2235,
           variantColor: "blue",
           variantImage: "./assets/vmSocks-blue-onWhite.jpg",
-          variantQuantity: 0
         }
       ],
       sizes: ["S", "M", "L", "XL", "XXL", "XXXL"]
@@ -91,12 +78,10 @@ Vue.component('product', {
   },
   methods: {
     addToCart() {
-      this.cart += 1;
+      this.$emit('add-to-cart', this.variants[this.selectedVariant].variantId);
     },
     removeFromCart() {
-      if (this.cart > 0) {
-        this.cart -= 1;
-      }
+      this.$emit('remove-from-cart', this.variants[this.selectedVariant].variantId);
     },
     updateProduct(index) {
       this.selectedVariant = index;
@@ -110,10 +95,13 @@ Vue.component('product', {
       return this.variants[this.selectedVariant].variantImage;
     },
     inStock() {
-      return this.variants[this.selectedVariant].variantQuantity > 0;
+      return true; // Убираем глобальный запас, т.к. корзина управляется в корневом Vue
     },
     shipping() {
       return this.premium ? "Free" : "2.99";
+    },
+    inCart() {
+      return this.$root.cart.includes(this.variants[this.selectedVariant].variantId);
     }
   }
 });
@@ -121,6 +109,18 @@ Vue.component('product', {
 let app = new Vue({
   el: '#app',
   data: {
-    premium: true
+    premium: true,
+    cart: []
+  },
+  methods: {
+    updateCart(id) {
+      this.cart.push(id);
+    },
+    removeFromCart(id) {
+      let index = this.cart.indexOf(id);
+      if (index !== -1) {
+        this.cart.splice(index, 1);
+      }
+    }
   }
 });

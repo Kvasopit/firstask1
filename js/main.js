@@ -120,14 +120,14 @@ Vue.component('product-review', {
       <!-- Поле Name -->
       <p>
         <label for="name">Name:</label>
-        <input id="name" v-model="name" placeholder="name">
+        <input id="name" v-model="name" placeholder="Your name">
         <span class="error" v-if="errors.name">{{ errors.name }}</span>
       </p>
 
       <!-- Поле Review -->
       <p>
         <label for="review">Review:</label>
-        <textarea id="review" v-model="review"></textarea>
+        <textarea id="review" v-model="review" placeholder="Write a review here"></textarea>
         <span class="error" v-if="errors.review">{{ errors.review }}</span>
       </p>
 
@@ -141,18 +141,20 @@ Vue.component('product-review', {
           <option>3</option>
           <option>2</option>
           <option>1</option>
-        </select>
+        </select> 
         <span class="error" v-if="errors.rating">{{ errors.rating }}</span>
       </p>
 
       <!-- Поле Recommendation -->
       <p>Would you recommend this product?</p>
-      <label>
-        <input type="radio" v-model="recommend" value="yes"> Yes
-      </label>
-      <label>
-        <input type="radio" v-model="recommend" value="no"> No
-      </label>
+      <div class="recommendation-block">
+        <label>
+          <input type="radio" v-model="recommend" value="yes"> Yes
+        </label>
+        <label>
+          <input type="radio" v-model="recommend" value="no"> No
+        </label>
+      </div>
       <span class="error" v-if="errors.recommend">{{ errors.recommend }}</span>
 
       <!-- Кнопка Submit -->

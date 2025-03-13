@@ -128,20 +128,20 @@ textarea {
     cursor: not-allowed; /* Курсор "недоступно" */
 }
 .review-form {
-    max-width: 400px; /* Ограничиваем ширину формы */
-    margin: 0 auto; /* Центрируем форму */
+    max-width: 400px;
+    margin: 0 auto;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
 }
 
 .review-form p {
-    margin-bottom: 15px; /* Отступ между полями */
+    margin-bottom: 15px;
 }
 
 .review-form label {
     display: flex;
-    align-items: center;
+    align-items: baseline; /* Выравниваем по базовой линии */
     margin-bottom: 10px;
 }
 
@@ -156,7 +156,9 @@ textarea {
 }
 
 .review-form input[type="radio"] {
-    margin-right: 5px;
+    margin-right: 10px; /* Отступ между радиокнопкой и текстом */
+    position: relative;
+    top: 2px; /* Сдвигаем радиокнопку вниз на 2px для точного выравнивания */
 }
 
 .review-form .error {
@@ -177,4 +179,16 @@ textarea {
 
 .review-form input[type="submit"]:hover {
     background-color: #369f6e;
+}
+
+/* Стили для блока с радиокнопками */
+.recommendation-block {
+    display: flex;
+    flex-direction: column; /* Располагаем радиокнопки вертикально */
+    align-items: flex-start; /* Выравниваем по левому краю */
+    margin-bottom: 15px;
+}
+
+.recommendation-block label {
+    margin-bottom: 5px; /* Отступ между радиокнопками */
 }

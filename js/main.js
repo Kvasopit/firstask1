@@ -119,17 +119,17 @@ Vue.component('product-review', {
     <form class="review-form" @submit.prevent="onSubmit">
       <p>
         <label for="name">Name:</label>
-        <input id="name" v-model="name" placeholder="name" required>
+        <input id="name" v-model="name" placeholder="name">
       </p>
 
       <p>
         <label for="review">Review:</label>
-        <textarea id="review" v-model="review" required></textarea>
+        <textarea id="review" v-model="review"></textarea>
       </p>
 
       <p>
         <label for="rating">Rating:</label>
-        <select id="rating" v-model="rating" required>
+        <select id="rating" v-model="rating">
           <option value="" disabled selected>Select rating</option>
           <option>5</option>
           <option>4</option>
@@ -138,14 +138,20 @@ Vue.component('product-review', {
           <option>1</option>
         </select>
       </p>
-      
+
       <p>Would you recommend this product?</p>
       <label>
-        <input type="radio" v-model="recommend" value="yes" required> Yes
+        <input type="radio" v-model="recommend" value="yes"> Yes
       </label>
       <label>
-        <input type="radio" v-model="recommend" value="no" required> No
+        <input type="radio" v-model="recommend" value="no"> No
       </label>
+
+      <div v-if="errors.length" style="border: 1px solid red;">
+        <ul>
+          <li v-for="(error, index) in errors" :key="index">{{ error }}</li>
+        </ul>
+      </div>
 
       <p>
         <input type="submit" value="Submit">
@@ -154,33 +160,38 @@ Vue.component('product-review', {
   `,
   data() {
     return {
-      name: null,
-      review: null,
+      name: "",
+      review: "",
       rating: null,
       recommend: null,
       errors: []
     };
   },
   methods: {
-    onSubmit() {
+    onSubmit(event) {
+      event.preventDefault();
       this.errors = [];
-      if (this.name && this.review && this.rating !== null && this.recommend !== null) {
+
+      if (!this.name || this.name.trim() === "") this.errors.push("This error: Name required.");
+      if (!this.review || this.review.trim() === "") this.errors.push("This error: Review required.");
+      if (this.rating === null) this.errors.push("This error: Rating required.");
+      if (this.recommend === null) this.errors.push("This error: Recommendation required.");
+
+      console.log("Errors:", this.errors);
+
+      if (this.errors.length === 0) {
         let productReview = {
           name: this.name,
           review: this.review,
           rating: Number(this.rating),
           recommend: this.recommend
         };
-        eventBus.$emit('review-submitted', productReview); // Передача отзыва через eventBus
+        eventBus.$emit('review-submitted', productReview);
+
         this.name = "";
         this.review = "";
         this.rating = null;
         this.recommend = null;
-      } else {
-        if (!this.name) this.errors.push("Name required.");
-        if (!this.review) this.errors.push("Review required.");
-        if (this.rating === null) this.errors.push("Rating required.");
-        if (this.recommend === null) this.errors.push("Recommendation required.");
       }
     }
   }

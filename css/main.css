@@ -107,3 +107,74 @@ textarea {
     margin-top: 5px;
     display: block;
 }
+.cart {
+    display: flex;
+    gap: 10px; /* Расстояние между кнопками */
+    margin-top: 20px; /* Отступ сверху */
+}
+
+.cart button {
+    padding: 3px 20px; /* Внутренние отступы */
+    font-size: 1em; /* Размер текста */
+    border: none; /* Убираем границу */
+    background-color: #42b983; /* Цвет фона */
+    color: white; /* Цвет текста */
+    cursor: pointer; /* Курсор в виде указателя */
+    border-radius: 5px; /* Закругленные углы */
+}
+
+.cart button:disabled {
+    background-color: #ccc; /* Цвет для неактивной кнопки */
+    cursor: not-allowed; /* Курсор "недоступно" */
+}
+.review-form {
+    max-width: 400px; /* Ограничиваем ширину формы */
+    margin: 0 auto; /* Центрируем форму */
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.review-form p {
+    margin-bottom: 15px; /* Отступ между полями */
+}
+
+.review-form label {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.review-form input[type="text"],
+.review-form textarea,
+.review-form select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.review-form input[type="radio"] {
+    margin-right: 5px;
+}
+
+.review-form .error {
+    color: red;
+    font-size: 0.9em;
+    margin-top: 5px;
+    display: block;
+}
+
+.review-form input[type="submit"] {
+    background-color: #42b983;
+    color: white;
+    padding: 5px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.review-form input[type="submit"]:hover {
+    background-color: #369f6e;
+}

@@ -117,16 +117,21 @@ Vue.component('product', {
 Vue.component('product-review', {
   template: `
     <form class="review-form" @submit.prevent="onSubmit">
+      <!-- Поле Name -->
       <p>
         <label for="name">Name:</label>
         <input id="name" v-model="name" placeholder="name">
+        <span class="error" v-if="errors.name">{{ errors.name }}</span>
       </p>
 
+      <!-- Поле Review -->
       <p>
         <label for="review">Review:</label>
         <textarea id="review" v-model="review"></textarea>
+        <span class="error" v-if="errors.review">{{ errors.review }}</span>
       </p>
 
+      <!-- Поле Rating -->
       <p>
         <label for="rating">Rating:</label>
         <select id="rating" v-model="rating">
@@ -137,8 +142,10 @@ Vue.component('product-review', {
           <option>2</option>
           <option>1</option>
         </select>
+        <span class="error" v-if="errors.rating">{{ errors.rating }}</span>
       </p>
 
+      <!-- Поле Recommendation -->
       <p>Would you recommend this product?</p>
       <label>
         <input type="radio" v-model="recommend" value="yes"> Yes
@@ -146,13 +153,9 @@ Vue.component('product-review', {
       <label>
         <input type="radio" v-model="recommend" value="no"> No
       </label>
+      <span class="error" v-if="errors.recommend">{{ errors.recommend }}</span>
 
-      <div v-if="errors.length" style="border: 1px solid red;">
-        <ul>
-          <li v-for="(error, index) in errors" :key="index">{{ error }}</li>
-        </ul>
-      </div>
-
+      <!-- Кнопка Submit -->
       <p>
         <input type="submit" value="Submit">
       </p>
@@ -164,22 +167,30 @@ Vue.component('product-review', {
       review: "",
       rating: null,
       recommend: null,
-      errors: []
+      errors: {} // Объект для хранения ошибок
     };
   },
   methods: {
-    onSubmit(event) {
-      event.preventDefault();
-      this.errors = [];
+    onSubmit() {
+      // Очищаем старые ошибки
+      this.errors = {};
 
-      if (!this.name || this.name.trim() === "") this.errors.push("This error: Name required.");
-      if (!this.review || this.review.trim() === "") this.errors.push("This error: Review required.");
-      if (this.rating === null) this.errors.push("This error: Rating required.");
-      if (this.recommend === null) this.errors.push("This error: Recommendation required.");
+      // Проверка полей
+      if (!this.name || this.name.trim() === "") {
+        this.errors.name = "Name is required.";
+      }
+      if (!this.review || this.review.trim() === "") {
+        this.errors.review = "Review is required.";
+      }
+      if (this.rating === null) {
+        this.errors.rating = "Rating is required.";
+      }
+      if (this.recommend === null) {
+        this.errors.recommend = "Recommendation is required.";
+      }
 
-      console.log("Errors:", this.errors);
-
-      if (this.errors.length === 0) {
+      // Если ошибок нет, отправляем данные
+      if (Object.keys(this.errors).length === 0) {
         let productReview = {
           name: this.name,
           review: this.review,
@@ -188,6 +199,7 @@ Vue.component('product-review', {
         };
         eventBus.$emit('review-submitted', productReview);
 
+        // Очищаем поля после отправки
         this.name = "";
         this.review = "";
         this.rating = null;

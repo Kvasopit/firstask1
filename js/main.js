@@ -272,7 +272,7 @@ Vue.component('product-tabs', {
 let app = new Vue({
   el: '#app',
   data: {
-    premium: true,
+    premium: false ,
     cart: [],
     tabs: ['Shipping', 'Details', 'Reviews', 'Make a Review']
   },
